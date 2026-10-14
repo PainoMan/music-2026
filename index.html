@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2026 新音乐推荐 · 为你而选</title>
+<style>
+  :root {
+    --bg:#0a0a0d; --card:#17171c; --card2:#1d1d24; --fg:#f2f2f7;
+    --sub:#9a9aa5; --line:#2a2a33; --accent:#fa233b;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:
+      radial-gradient(1000px 500px at 15% -8%, rgba(250,35,59,.16), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgba(120,80,255,.13), transparent 55%),
+      var(--bg);
+    color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:calc(env(safe-area-inset-top,0px) + 34px) 20px 60px;
+    max-width:1180px; margin:0 auto; line-height:1.55;
+  }
+  header { margin-bottom:28px; }
+  .kicker { font-size:13px; letter-spacing:.22em; color:var(--accent); font-weight:600; text-transform:uppercase; }
+  h1 {
+    font-size:clamp(30px,6vw,50px); font-weight:800; letter-spacing:-.02em;
+    margin:12px 0 14px; line-height:1.1;
+    background:linear-gradient(100deg,#fff 20%,#ff8a9b 60%,#c08bff);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .lede { color:var(--sub); font-size:15px; max-width:660px; }
+  .stats { display:flex; gap:26px; margin-top:26px; flex-wrap:wrap; }
+  .stat b { display:block; font-size:26px; font-weight:800; color:#fff; }
+  .stat span { font-size:12.5px; color:var(--sub); }
+
+  .tabs {
+    position:sticky; top:0; z-index:9; display:flex; gap:9px; flex-wrap:wrap;
+    padding:12px 0; margin-bottom:30px;
+    background:linear-gradient(180deg,var(--bg) 62%,transparent);
+  }
+  .tab {
+    font-size:14px; font-weight:600; color:#c9c9d4; cursor:pointer; user-select:none;
+    padding:8px 16px; border-radius:22px; border:1px solid var(--line);
+    background:var(--card); transition:all .18s;
+  }
+  .tab:hover { border-color:#3f3f4d; color:#fff; }
+  .tab.active {
+    color:#fff; border-color:transparent;
+    background:linear-gradient(100deg,var(--accent),#c08bff);
+    box-shadow:0 8px 22px -10px rgba(250,35,59,.7);
+  }
+  .tab .n { opacity:.72; font-weight:500; margin-left:5px; font-size:12.5px; }
+
+  section { margin-bottom:52px; }
+  h2 { font-size:21px; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:11px; }
+  h2::before { content:""; width:5px; height:20px; border-radius:3px; background:linear-gradient(var(--accent),#c08bff); }
+  .count { font-size:12px; color:var(--sub); background:var(--card2); border:1px solid var(--line); padding:2px 9px; border-radius:20px; font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
+  .card {
+    background:linear-gradient(180deg,var(--card),var(--card2));
+    border:1px solid var(--line); border-radius:18px; padding:14px;
+    text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:13px;
+    transition:transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s, border-color .22s;
+  }
+  .card:hover { transform:translateY(-5px); border-color:#3a3a46; box-shadow:0 18px 40px -18px rgba(250,35,59,.45); }
+  .cover { position:relative; aspect-ratio:1; border-radius:12px; overflow:hidden; background:var(--card2); }
+  .cover img { width:100%; height:100%; object-fit:cover; display:block; }
+  .ph { width:100%; height:100%; display:grid; place-items:center; font-size:44px; color:#4a4a58;
+        background:repeating-linear-gradient(135deg,#1a1a20,#1a1a20 12px,#20202a 12px,#20202a 24px); }
+  .badge { position:absolute; top:9px; right:9px; font-size:11px; font-weight:700; color:#fff;
+           padding:3px 9px; border-radius:20px; letter-spacing:.02em; box-shadow:0 2px 8px rgba(0,0,0,.4); }
+  .meta h3 { font-size:16px; font-weight:700; line-height:1.3; letter-spacing:-.01em; }
+  .artist { font-size:13px; color:#d9d9e3; margin-top:2px; }
+  .time { font-size:12px; color:var(--accent); font-weight:600; margin-top:5px; font-variant-numeric:tabular-nums; }
+  .note { font-size:12.5px; color:var(--sub); margin-top:8px; }
+  footer { border-top:1px solid var(--line); padding-top:22px; color:var(--sub); font-size:12.5px; }
+  footer b { color:#c9c9d4; }
+  .empty { color:var(--sub); font-size:14px; padding:20px 0; display:none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Listen · 2026</div>
+  <h1>2026 新音乐推荐</h1>
+  <p class="lede">按你的口味定制——Taylor Swift、The Weeknd、RADWIMPS、周杰伦、米津玄師、藤井風、久石让…… 覆盖 2025 下半年至 2026 已发行与待发行作品。<b>点封面直接跳 Apple Music 作品页。</b></p>
+  <div class="stats">
+    <div class="stat"><b>19</b><span>部作品</span></div>
+    <div class="stat"><b>14</b><span>可直链</span></div>
+    <div class="stat"><b>3</b><span>个地区</span></div>
+  </div>
+</header>
+
+<div class="tabs"><div class="tab active" data-filter="all">全部<span class="n">19</span></div><div class="tab" data-filter="zh">国语<span class="n">4</span></div><div class="tab" data-filter="en">英语<span class="n">4</span></div><div class="tab" data-filter="ja">日语<span class="n">5</span></div><div class="tab" data-filter="ko">韩语<span class="n">3</span></div><div class="tab" data-filter="inst">器乐<span class="n">3</span></div></div>
+
+<main><section data-region="欧美"><h2>欧美<span class="count">5</span></h2><div class="grid"><a class="card" data-lang="en" href="https://music.apple.com/cn/album/the-life-of-a-showgirl-the-encore/6814995859" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/showgirl.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>The Life of a Showgirl: The Encore</h3>
+    <p class="artist">Taylor Swift</p>
+    <p class="time">2026-09-24</p>
+    <p class="note">第 12 张专辑的加曲版，新增 4 首新录歌曲，最低成本补课。</p>
+  </div>
+</a><a class="card" data-lang="en" href="https://music.apple.com/cn/album/play-extended-edition/1838456237" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/play.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>Play (Extended Edition)</h3>
+    <p class="artist">Ed Sheeran</p>
+    <p class="time">2025-09-12</p>
+    <p class="note">“播放控制符”五部曲第一部，纯 Pop 主调，直接听扩展版的加曲。</p>
+  </div>
+</a><a class="card" data-lang="inst" href="https://music.apple.com/cn/album/f1-the-movie-original-score-by-hans-zimmer/1824045070" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/f1.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>F1® The Movie (Original Score)</h3>
+    <p class="artist">Hans Zimmer</p>
+    <p class="time">2025-07-11</p>
+    <p class="note">管弦+电子混合的体育片配乐，非《沙丘》式氛围，能当歌听。先听 Original Score 版。</p>
+  </div>
+</a><a class="card" data-lang="en" href="#" target="_blank" rel="noopener">
+  <div class="cover"><div class="ph">♪</div><span class="badge" style="background:#d97706">待发行</span></div>
+  <div class="meta">
+    <h3>Grand Theft Auto VI: The Album</h3>
+    <p class="artist">Rockstar / Atlantic</p>
+    <p class="time">2026-11-19</p>
+    <p class="note">游戏专属原创原声，34 首全新曲。定档 2026-11-19，官宣日已上线 6 首先行曲。</p>
+  </div>
+</a><a class="card" data-lang="en" href="#" target="_blank" rel="noopener">
+  <div class="cover"><div class="ph">♪</div><span class="badge" style="background:#d97706">待发行</span></div>
+  <div class="meta">
+    <h3>Tokyo</h3>
+    <p class="artist">The Weeknd feat. 高橋洋子</p>
+    <p class="time">2026-09（现场）</p>
+    <p class="note">采样《新世纪福音战士》主题曲，高橋洋子同台。仅 2026-09 东京现场首演，未正式发行。</p>
+  </div>
+</a></div></section><section data-region="华语"><h2>华语<span class="count">5</span></h2><div class="grid"><a class="card" data-lang="zh" href="https://music.apple.com/cn/search?term=%E5%A4%AA%E9%99%BD%E4%B9%8B%E5%AD%90%20%E5%91%A8%E6%9D%B0%E5%80%AB" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/sun.jpg" alt="" loading="lazy"><span class="badge" style="background:#6b7280">搜索页</span></div>
+  <div class="meta">
+    <h3>太陽之子</h3>
+    <p class="artist">周杰倫</p>
+    <p class="time">2026-03-25</p>
+    <p class="note">出道 25 周年纪念专，暌违 3 年 8 个月。先听同名主打，再听《西西里》。</p>
+  </div>
+</a><a class="card" data-lang="zh" href="https://music.apple.com/cn/album/%E8%87%AA%E7%94%B1%E7%9A%84%E4%BD%A0/6815092481?i=6815092483" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/freeyou.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>自由的你 (Free to Be You)</h3>
+    <p class="artist">鄧紫棋</p>
+    <p class="time">2026-10-05</p>
+    <p class="note">时隔四年的新专辑先行曲，李荣浩身兼制作/编曲/混音。注意听副歌人声的“收”。</p>
+  </div>
+</a><a class="card" data-lang="zh" href="https://music.apple.com/cn/album/fear-and-dreams-live/1831490372" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/fear.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>FEAR and DREAMS (Live)</h3>
+    <p class="artist">陳奕迅</p>
+    <p class="time">2025-08-25</p>
+    <p class="note">七年巡演收官，31 首重新编排现场版，按官方顺序听是情绪递进设计。</p>
+  </div>
+</a><a class="card" data-lang="zh" href="https://music.apple.com/cn/album/%E5%B0%8F%E7%8E%8B-live/1873217164" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/xiaowang.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>小王 (Live)</h3>
+    <p class="artist">毛不易</p>
+    <p class="time">2026-02-03</p>
+    <p class="note">“时空倒转”概念重唱《二零三》《水乡》《东北民谣》，减法路线，现场编曲更干净。</p>
+  </div>
+</a><a class="card" data-lang="inst" href="https://music.apple.com/cn/search?term=%E5%93%AA%E5%90%92%E4%B9%8B%E9%AD%94%E7%AB%A5%E9%97%B9%E6%B5%B7%20%E7%94%B5%E5%BD%B1%E5%8E%9F%E5%A3%B0%E5%A4%A7%E7%A2%9F%20%E9%98%BF%E9%B2%B2%20/%20%E6%9C%B1%E8%8A%B8%E7%BC%96%20/%20%E6%9D%A8%E8%8A%AE" target="_blank" rel="noopener">
+  <div class="cover"><div class="ph">♪</div><span class="badge" style="background:#6b7280">搜索页</span></div>
+  <div class="meta">
+    <h3>哪吒之魔童闹海 电影原声大碟</h3>
+    <p class="artist">阿鲲 / 朱芸编 / 杨芮</p>
+    <p class="time">2025-03-09</p>
+    <p class="note">60 首音乐段落，唢呐/笛/箫/埙 + 侗族大歌/呼麦与西乐混合。挑名场面曲，一次 3–4 首。（苹果库内暂未收录，点开为搜索页）</p>
+  </div>
+</a></div></section><section data-region="日韩"><h2>日韩<span class="count">9</span></h2><div class="grid"><a class="card" data-lang="ja" href="https://music.apple.com/cn/album/the-book-for/6775750598" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/yoasobi_ep.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>THE BOOK for,</h3>
+    <p class="artist">YOASOBI</p>
+    <p class="time">2026-06-26</p>
+    <p class="note">“THE BOOK”系列完结作，按曲序听，系列作品是整体叙事。</p>
+  </div>
+</a><a class="card" data-lang="ja" href="https://music.apple.com/cn/search?term=%E3%81%82%E3%81%AB%E3%82%85%E3%83%BC%20%28Anew%29%20RADWIMPS" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/radwimps.jpg" alt="" loading="lazy"><span class="badge" style="background:#6b7280">搜索页</span></div>
+  <div class="meta">
+    <h3>あにゅー (Anew)</h3>
+    <p class="artist">RADWIMPS</p>
+    <p class="time">2025-10-08</p>
+    <p class="note">出道 20 周年、剔原声后时隔 4 年首张纯专辑，Rock + 电影主题曲双线。</p>
+  </div>
+</a><a class="card" data-lang="ja" href="https://music.apple.com/cn/album/%E7%83%8F-raven/6774039193?i=6774039202" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/kenshi_k.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>烏 (Raven)</h3>
+    <p class="artist">米津玄師</p>
+    <p class="time">2026-06-15</p>
+    <p class="note">2026 NHK 足球主题曲，节奏推进感强，适合跑步/通勤。</p>
+  </div>
+</a><a class="card" data-lang="ja" href="https://music.apple.com/cn/album/%E5%A4%9C%E9%B7%B9-yodaka/6785367850?i=6785367852" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/kenshi_y.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>夜鷹 (Yodaka)</h3>
+    <p class="artist">米津玄師</p>
+    <p class="time">2026-07-13</p>
+    <p class="note">电影《キングダム 魂の決戦》主题歌，夜里戴耳机听编曲层次。</p>
+  </div>
+</a><a class="card" data-lang="ja" href="https://music.apple.com/cn/album/prema/1819419299" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/fujii.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>Prema</h3>
+    <p class="artist">藤井風</p>
+    <p class="time">2025-09-05</p>
+    <p class="note">“全球化”转折点，9 首全英文；编曲更 R&amp;B 化，贴合你 R&amp;B 那条线。</p>
+  </div>
+</a><a class="card" data-lang="inst" href="https://music.apple.com/cn/album/symphony-no-3-metaphysica-harp-concerto/6777957798" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/hisaishi.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>Symphony No. 3 &quot;Metaphysica&quot; &amp; Harp Concerto</h3>
+    <p class="artist">久石譲</p>
+    <p class="time">2026-07-24</p>
+    <p class="note">少见的纯古典创作专辑（非宫崎骏原声）。先听《Harp Concerto》，更短更有画面感。</p>
+  </div>
+</a><a class="card" data-lang="ko" href="https://music.apple.com/cn/album/arirang/1885720384" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/bts.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>ARIRANG</h3>
+    <p class="artist">BTS</p>
+    <p class="time">2026-03-20</p>
+    <p class="note">军白期结束后全员回归。挑抒情/R&amp;B 向曲目听，别被 K-pop 标签先入为主。</p>
+  </div>
+</a><a class="card" data-lang="ko" href="https://music.apple.com/cn/album/unknown-planet-single/6808583617" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/iu.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>Unknown Planet (이 별로부터)</h3>
+    <p class="artist">IU</p>
+    <p class="time">2026-09-10</p>
+    <p class="note">Ballad/Pop + 影视型歌手，正规 6 辑先行曲。偏轻电子的一首。</p>
+  </div>
+</a><a class="card" data-lang="ko" href="https://music.apple.com/cn/album/kpop-demon-hunters-soundtrack-from-the-netflix-film/1837843433" target="_blank" rel="noopener">
+  <div class="cover"><img src="img/kpop_demon.jpg" alt="" loading="lazy"><span class="badge" style="background:#fa233b">可直链</span></div>
+  <div class="meta">
+    <h3>KPop Demon Hunters (Soundtrack)</h3>
+    <p class="artist">HUNTR/X / Saja Boys</p>
+    <p class="time">2025-09-05</p>
+    <p class="note">动画电影原声，主打《Golden》全球爆红。“动画原声 + R&amp;B”两条线并轨。</p>
+  </div>
+</a></div></section><div class="empty" id="empty">这个分类下暂无作品。</div></main>
+<footer>
+  <p><b>说明</b>：直链经 Apple 官方曲库（iTunes API）逐条核实并验证过国区可访问；标注「搜索页」的为台区/日区独占，国区无对应作品页；「待发行」作品尚未上线。语言分类按作品主要演唱语言，纯配乐归「器乐」。</p>
+  <p style="margin-top:8px">数据来源：联网研究检索（2026-10-14）+ Apple 官方曲库校验 · 生成于 Minis</p>
+</footer>
+<script>
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x===t); });
+    var f = t.dataset.filter, shown = 0;
+    document.querySelectorAll('.card').forEach(function(c){
+      var on = (f==='all' || c.dataset.lang===f);
+      c.style.display = on ? '' : 'none';
+      if (on) shown++;
+    });
+    document.querySelectorAll('section').forEach(function(s){
+      var vis = [].slice.call(s.querySelectorAll('.card')).some(function(c){ return c.style.display!=='none'; });
+      s.style.display = vis ? '' : 'none';
+    });
+    document.getElementById('empty').style.display = shown ? 'none' : 'block';
+  });
+});
+</script>
+</body>
+</html>
